@@ -154,3 +154,4 @@ Semua 5 skenario pengujian berhasil lulus (*Passed*) dengan sempurna.
 Aplikasi **Quick Notes & To-Do List** telah berhasil dibangun menggunakan framework Flutter dan bahasa pemrograman Dart sesuai spesifikasi soal **Kasus 2 UTS Pemrograman Mobile Lanjut (INF3022)**. Seluruh fitur minimal yang dipersyaratkan (CRUD lengkap, pencarian judul real-time, validasi formulir dengan `TextEditingController`, serta penyimpanan lokal persisten dengan `sqflite`) berjalan dengan stabil dan lancar. 
 
 Penerapan *clean architecture* dan pemisahan modul yang terstruktur mempermudah pemeliharaan serta pengembangan fitur aplikasi di masa mendatang.
+
