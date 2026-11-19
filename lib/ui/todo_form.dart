@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../helpers/db_helper.dart';
 import '../models/todo_item.dart';
@@ -183,9 +184,17 @@ class _TodoFormPageState extends State<TodoFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light, // Baterai, jam, wifi PUTIH
+          statusBarBrightness: Brightness.dark,
+        ),
+        backgroundColor: const Color(0xFF4F46E5),
+        foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
-          _isEditMode ? "Edit Catatan / Tugas" : "Tambah Catatan / Tugas",
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          _isEditMode ? "Edit Tugas" : "Tambah Tugas Baru",
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         elevation: 0,
       ),

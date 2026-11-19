@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../helpers/db_helper.dart';
 import '../models/todo_item.dart';
@@ -147,23 +148,64 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    final topPadding = MediaQuery.of(context).padding.top;
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light, // Baterai, jam, wifi berwarna PUTIH
+        statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF8FAFC),
+        body: Column(
           children: [
-            // 1. Modern Header (App Bar)
-            _buildModernHeader(),
+            // 1. Integrated Deep Indigo Header (Meliputi Status Bar agar jam/baterai putih kontras)
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF1E1B4B), // Deep Slate Indigo 950
+                    Color(0xFF312E81), // Indigo 900
+                    Color(0xFF4338CA), // Indigo 700
+                    Color(0xFF4F46E5), // Electric Indigo 600
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(24.0),
+                  bottomRight: Radius.circular(24.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x294F46E5),
+                    blurRadius: 16.0,
+                    offset: Offset(0, 6),
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.fromLTRB(16.0, topPadding + 8.0, 16.0, 16.0),
+              child: Column(
+                children: [
+                  _buildModernHeader(),
+                  const SizedBox(height: 12.0),
+                  _buildHeroBannerContent(),
+                ],
+              ),
+            ),
 
-            // 2. Productivity Hero Banner
-            _buildHeroBanner(),
+            const SizedBox(height: 10.0),
 
-            // 3. Search Bar
+            // 2. Search Bar
             _buildSearchBar(),
 
-            // 4. Filter Chips (Status & Kategori)
+            // 3. Filter Chips (Status & Kategori)
             _buildFilters(),
 
-            // 5. Daftar Tugas (ListView / Empty State)
+            // 4. Daftar Tugas (ListView / Empty State)
             Expanded(
               child: _isLoading
                   ? const Center(
@@ -195,15 +237,15 @@ class _TodoPageState extends State<TodoPage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _navigateToAdd,
-        elevation: 3,
-        backgroundColor: const Color(0xFF4F46E5),
-        icon: const Icon(Icons.add_rounded, size: 22),
-        label: const Text(
-          "Tugas Baru",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: _navigateToAdd,
+          elevation: 4,
+          backgroundColor: const Color(0xFF4F46E5),
+          icon: const Icon(Icons.add_rounded, size: 22),
+          label: const Text(
+            "Tugas Baru",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5),
+          ),
         ),
       ),
     );
@@ -225,128 +267,108 @@ class _TodoPageState extends State<TodoPage> {
     }
   }
 
-  // Modern Header
+  // Modern Header with White Text and Controls
   Widget _buildModernHeader() {
     final dateFormatted = _getFormattedDate();
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(18.0, 14.0, 16.0, 6.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 38.0,
-                height: 38.0,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF4F46E5).withValues(alpha: 0.3),
-                      blurRadius: 8.0,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.check_rounded,
-                  color: Colors.white,
-                  size: 22.0,
-                ),
-              ),
-              const SizedBox(width: 12.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        "FlowDo",
-                        style: TextStyle(
-                          fontSize: 21.0,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.5,
-                          color: Color(0xFF0F172A),
-                        ),
-                      ),
-                      const SizedBox(width: 4.0),
-                      Container(
-                        width: 6.0,
-                        height: 6.0,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF10B981),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    dateFormatted,
-                    style: const TextStyle(
-                      fontSize: 12.5,
-                      color: Color(0xFF64748B),
-                      fontWeight: FontWeight.w500,
-                    ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 38.0,
+              height: 38.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 8.0,
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),
-            ],
-          ),
-          IconButton(
-            onPressed: _loadData,
-            tooltip: "Muat Ulang",
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                side: const BorderSide(color: Color(0xFFE2E8F0)),
+              child: const Icon(
+                Icons.check_rounded,
+                color: Color(0xFF4F46E5),
+                size: 24.0,
               ),
             ),
-            icon: const Icon(
-              Icons.sync_rounded,
-              color: Color(0xFF475569),
-              size: 20.0,
+            const SizedBox(width: 12.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Text(
+                      "FlowDo",
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -0.5,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 5.0),
+                    Container(
+                      width: 7.0,
+                      height: 7.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFF10B981), // Emerald dot
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  dateFormatted,
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    color: Colors.white.withValues(alpha: 0.8),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        IconButton(
+          onPressed: _loadData,
+          tooltip: "Muat Ulang",
+          style: IconButton.styleFrom(
+            backgroundColor: Colors.white.withValues(alpha: 0.15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
             ),
           ),
-        ],
-      ),
+          icon: const Icon(
+            Icons.sync_rounded,
+            color: Colors.white,
+            size: 20.0,
+          ),
+        ),
+      ],
     );
   }
 
-  // Hero Progress Card
-  Widget _buildHeroBanner() {
+  // Hero Progress Content inside Header
+  Widget _buildHeroBannerContent() {
     final total = _stats['total'] ?? 0;
     final completed = _stats['completed'] ?? 0;
     final pending = _stats['pending'] ?? 0;
     final percentage = total > 0 ? ((completed / total) * 100).round() : 0;
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 10.0),
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(14.0),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF3730A3), // Indigo 800
-            Color(0xFF4F46E5), // Indigo 600
-            Color(0xFF7C3AED), // Violet 600
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        color: Colors.white.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(18.0),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.18),
+          width: 1.0,
         ),
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF4F46E5).withValues(alpha: 0.28),
-            blurRadius: 16.0,
-            offset: const Offset(0, 6),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,13 +381,13 @@ class _TodoPageState extends State<TodoPage> {
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
-                  fontSize: 15.0,
+                  fontSize: 14.5,
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.5),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: const Color(0xFF10B981),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Text(
@@ -373,7 +395,7 @@ class _TodoPageState extends State<TodoPage> {
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12.0,
+                    fontSize: 11.5,
                   ),
                 ),
               ),
@@ -384,12 +406,12 @@ class _TodoPageState extends State<TodoPage> {
             borderRadius: BorderRadius.circular(10.0),
             child: LinearProgressIndicator(
               value: total > 0 ? (completed / total) : 0.0,
-              minHeight: 7.0,
-              backgroundColor: Colors.white.withValues(alpha: 0.25),
+              minHeight: 6.5,
+              backgroundColor: Colors.white.withValues(alpha: 0.2),
               valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF34D399)),
             ),
           ),
-          const SizedBox(height: 14.0),
+          const SizedBox(height: 12.0),
           Row(
             children: [
               _buildMiniStatBadge("Total", "$total", Icons.assignment_outlined),
@@ -407,7 +429,7 @@ class _TodoPageState extends State<TodoPage> {
   Widget _buildMiniStatBadge(String label, String value, IconData icon) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 6.0),
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(12.0),
@@ -415,8 +437,8 @@ class _TodoPageState extends State<TodoPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 14.0, color: Colors.white70),
-            const SizedBox(width: 5.0),
+            Icon(icon, size: 13.5, color: Colors.white70),
+            const SizedBox(width: 4.5),
             Text(
               "$value $label",
               style: const TextStyle(

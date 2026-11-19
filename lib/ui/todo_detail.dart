@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../helpers/db_helper.dart';
 import '../models/todo_item.dart';
 import '../widgets/confirm_dialog.dart';
@@ -139,9 +140,17 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light, // Baterai, jam, wifi PUTIH
+            statusBarBrightness: Brightness.dark,
+          ),
+          backgroundColor: const Color(0xFF4F46E5),
+          foregroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.white),
           title: const Text(
-            "Detail Catatan / Tugas",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            "Detail Tugas",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
           actions: [
             IconButton(
@@ -150,7 +159,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
               onPressed: _navigateToEdit,
             ),
             IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+              icon: const Icon(Icons.delete_outline, color: Colors.white),
               tooltip: "Hapus Tugas",
               onPressed: _confirmDelete,
             ),

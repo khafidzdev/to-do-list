@@ -1,12 +1,24 @@
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'ui/todo_page.dart';
+import 'ui/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Atur overlay status bar agar baterai, jam, dan wifi selalu PUTIH bersih
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light, // Ikon baterai & jam putih di Android
+      statusBarBrightness: Brightness.dark,      // Status bar putih di iOS
+      systemNavigationBarColor: Color(0xFF0F172A),
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
 
   // Inisialisasi locale formatting untuk penanggalan bahasa Indonesia
   await initializeDateFormatting('id_ID', null);
@@ -46,9 +58,14 @@ class FlowDoApp extends StatelessWidget {
           centerTitle: false,
           elevation: 0,
           scrolledUnderElevation: 0,
-          backgroundColor: Colors.transparent,
-          foregroundColor: Color(0xFF0F172A),
-          iconTheme: IconThemeData(color: Color(0xFF0F172A)),
+          backgroundColor: Color(0xFF4F46E5),
+          foregroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light, // Ikon baterai & jam putih
+            statusBarBrightness: Brightness.dark,
+          ),
         ),
         cardTheme: CardThemeData(
           elevation: 0,
@@ -88,7 +105,7 @@ class FlowDoApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const TodoPage(),
+      home: const SplashPage(),
     );
   }
 }
