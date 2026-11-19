@@ -137,50 +137,11 @@ class _SplashPageState extends State<SplashPage>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Logo Badge FlowDo
-                        Container(
-                          width: 100.0,
-                          height: 100.0,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(28.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.25),
-                                blurRadius: 24.0,
-                                offset: const Offset(0, 10),
-                              ),
-                              BoxShadow(
-                                color: const Color(0xFF4F46E5).withValues(alpha: 0.4),
-                                blurRadius: 36.0,
-                                offset: const Offset(0, 14),
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.check_rounded,
-                                  size: 54.0,
-                                  color: Color(0xFF4F46E5),
-                                ),
-                                Positioned(
-                                  top: 22,
-                                  right: 22,
-                                  child: Container(
-                                    width: 11.0,
-                                    height: 11.0,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF10B981),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        // Logo Badge Resmi FlowDo (Identik dengan Launcher Icon)
+                        Image.asset(
+                          'assets/images/app_logo.png',
+                          width: 108.0,
+                          height: 108.0,
                         ),
 
                         const SizedBox(height: 24.0),
@@ -270,3 +231,4 @@ class _SplashPageState extends State<SplashPage>
     );
   }
 }
+

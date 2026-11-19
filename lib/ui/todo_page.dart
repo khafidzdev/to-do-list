@@ -276,25 +276,10 @@ class _TodoPageState extends State<TodoPage> {
       children: [
         Row(
           children: [
-            Container(
+            Image.asset(
+              'assets/images/app_logo.png',
               width: 38.0,
               height: 38.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8.0,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.check_rounded,
-                color: Color(0xFF4F46E5),
-                size: 24.0,
-              ),
             ),
             const SizedBox(width: 12.0),
             Column(
