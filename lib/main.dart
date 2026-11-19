@@ -1,11 +1,15 @@
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'ui/todo_page.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inisialisasi locale formatting untuk penanggalan bahasa Indonesia
+  await initializeDateFormatting('id_ID', null);
 
   // Inisialisasi SQLite FFI untuk platform desktop (Linux, Windows, macOS)
   if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {

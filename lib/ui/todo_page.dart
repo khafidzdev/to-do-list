@@ -209,10 +209,25 @@ class _TodoPageState extends State<TodoPage> {
     );
   }
 
+  String _getFormattedDate() {
+    final now = DateTime.now();
+    try {
+      return DateFormat('EEEE, d MMM', 'id_ID').format(now);
+    } catch (_) {
+      const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+      const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+        'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+      ];
+      final dayName = days[now.weekday - 1];
+      final monthName = months[now.month - 1];
+      return '$dayName, ${now.day} $monthName';
+    }
+  }
+
   // Modern Header
   Widget _buildModernHeader() {
-    final now = DateTime.now();
-    final dateFormatted = DateFormat('EEEE, d MMM', 'id_ID').format(now);
+    final dateFormatted = _getFormattedDate();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(18.0, 14.0, 16.0, 6.0),

@@ -360,10 +360,21 @@ class _TodoFormPageState extends State<TodoFormPage> {
     );
   }
 
+  String _formatDisplayDate(DateTime? date) {
+    if (date == null) return "Belum ditentukan";
+    try {
+      return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
+    } catch (_) {
+      try {
+        return DateFormat('yyyy-MM-dd').format(date);
+      } catch (_) {
+        return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+      }
+    }
+  }
+
   Widget _datePickerTile() {
-    final dateDisplay = _selectedDueDate != null
-        ? DateFormat('EEEE, dd MMMM yyyy').format(_selectedDueDate!)
-        : "Belum ditentukan";
+    final dateDisplay = _formatDisplayDate(_selectedDueDate);
 
     return InkWell(
       onTap: _pickDueDate,
