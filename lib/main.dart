@@ -1,19 +1,8 @@
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'ui/todo_page.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Inisialisasi Database SQLite FFI khusus untuk platform desktop (Linux, Windows, macOS)
-  // Untuk Android dan iOS, native sqflite digunakan secara otomatis tanpa konfigurasi khusus.
-  if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-  }
-
   runApp(const MyApp());
 }
 

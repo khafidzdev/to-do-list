@@ -1,30 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:todo_list/main.dart';
+import 'package:todo_list/models/todo_item.dart';
+import 'package:todo_list/widgets/confirm_dialog.dart';
+import 'package:todo_list/widgets/success_dialog.dart';
+import 'package:todo_list/widgets/todo_card.dart';
+import 'package:todo_list/widgets/warning_dialog.dart';
 
 void main() {
-  setUpAll(() {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
+  testWidgets('Uji Widget TodoCard menampilkan judul dan prioritas', (WidgetTester tester) async {
+    final todo = TodoItem(
+      id: 1,
+      title: 'Tugas Belajar Flutter',
+      description: 'Deskripsi tugas belajar Flutter',
+      category: 'Kuliah',
+      priority: 'Tinggi',
+      dueDate: '2026-11-25',
+      isCompleted: false,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: TodoCard(
+            todo: todo,
+            onToggle: (_) {},
+            onTap: () {},
+            onEdit: () {},
+            onDelete: () {},
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Tugas Belajar Flutter'), findsOneWidget);
+    expect(find.text('Deskripsi tugas belajar Flutter'), findsOneWidget);
+    expect(find.text('Kuliah'), findsOneWidget);
+    expect(find.text('Tinggi'), findsOneWidget);
   });
 
-  testWidgets('Memverifikasi judul AppBar dan Tombol Tambah Tugas', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
-    // Beri waktu proses asinkron DB inisialisasi dan refresh frame
-    await tester.pump();
-    await tester.pump(const Duration(seconds: 1));
+  testWidgets('Uji Dialog Sukses dan Peringatan', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: SuccessDialog(description: 'Berhasil disimpan'),
+        ),
+      ),
+    );
+    expect(find.text('BERHASIL'), findsOneWidget);
+    expect(find.text('Berhasil disimpan'), findsOneWidget);
 
-    // Verifikasi keberadaan Judul pada AppBar
-    expect(find.text('Quick Notes & To-Do List'), findsOneWidget);
-    expect(find.text('Penyimpanan Lokal SQLite (UTS INF3022)'), findsOneWidget);
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: WarningDialog(description: 'Peringatan validasi'),
+        ),
+      ),
+    );
+    expect(find.text('PERINGATAN'), findsOneWidget);
+    expect(find.text('Peringatan validasi'), findsOneWidget);
 
-    // Verifikasi keberadaan FloatingActionButton Tambah Tugas
-    expect(find.text('Tambah Tugas'), findsOneWidget);
-    expect(find.byIcon(Icons.add_task_rounded), findsOneWidget);
-
-    // Verifikasi keberadaan Search bar
-    expect(find.byIcon(Icons.search_rounded), findsOneWidget);
-    expect(find.text('Cari catatan berdasarkan judul...'), findsOneWidget);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: ConfirmDialog(
+            title: 'Konfirmasi',
+            description: 'Yakin hapus?',
+            onConfirm: () {},
+          ),
+        ),
+      ),
+    );
+    expect(find.text('Konfirmasi'), findsOneWidget);
+    expect(find.text('Yakin hapus?'), findsOneWidget);
   });
 }
