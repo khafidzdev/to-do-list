@@ -1,5 +1,8 @@
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../models/todo_item.dart';
 
 class DbHelper {
@@ -20,6 +23,12 @@ class DbHelper {
   }
 
   Future<Database> _initDb() async {
+    // Inisialisasi FFI untuk desktop Linux / Windows / macOS agar databaseFactory tersedia
+    if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
+
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, dbName);
 
