@@ -132,7 +132,7 @@ class _TodoFormPageState extends State<TodoFormPage> {
           context: context,
           barrierDismissible: false,
           builder: (context) => SuccessDialog(
-            description: "Catatan tugas berhasil diperbarui!",
+            description: "Perubahan tugas berhasil diperbarui!",
             okClick: () {
               Navigator.of(context).pop(true);
             },
@@ -155,7 +155,7 @@ class _TodoFormPageState extends State<TodoFormPage> {
           context: context,
           barrierDismissible: false,
           builder: (context) => SuccessDialog(
-            description: "Catatan tugas baru berhasil disimpan ke penyimpanan lokal!",
+            description: "Tugas baru berhasil ditambahkan!",
             okClick: () {
               Navigator.of(context).pop(true);
             },

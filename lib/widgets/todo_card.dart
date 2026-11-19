@@ -20,233 +20,303 @@ class TodoCard extends StatelessWidget {
   Color _getPriorityColor(String priority) {
     switch (priority.toLowerCase()) {
       case 'tinggi':
-        return Colors.red.shade600;
+        return const Color(0xFFEF4444); // Red 500
       case 'sedang':
-        return Colors.orange.shade700;
+        return const Color(0xFFF59E0B); // Amber 500
       case 'rendah':
-        return Colors.green.shade600;
+        return const Color(0xFF10B981); // Emerald 500
       default:
-        return Colors.blueGrey;
+        return const Color(0xFF64748B);
+    }
+  }
+
+  Color _getPriorityBg(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'tinggi':
+        return const Color(0xFFFEF2F2);
+      case 'sedang':
+        return const Color(0xFFFFFBEB);
+      case 'rendah':
+        return const Color(0xFFECFDF5);
+      default:
+        return const Color(0xFFF1F5F9);
     }
   }
 
   Color _getCategoryColor(String category) {
     switch (category.toLowerCase()) {
       case 'kuliah':
-        return Colors.indigo;
-      case 'tugas':
-        return Colors.deepPurple;
+        return const Color(0xFF4F46E5);
       case 'pekerjaan':
-        return Colors.blue.shade700;
+        return const Color(0xFF0284C7);
+      case 'tugas':
+        return const Color(0xFF7C3AED);
       case 'pribadi':
-        return Colors.teal.shade700;
+        return const Color(0xFFD97706);
       default:
-        return Colors.blueGrey;
+        return const Color(0xFF475569);
+    }
+  }
+
+  Color _getCategoryBg(String category) {
+    switch (category.toLowerCase()) {
+      case 'kuliah':
+        return const Color(0xFFEEF2FF);
+      case 'pekerjaan':
+        return const Color(0xFFF0F9FF);
+      case 'tugas':
+        return const Color(0xFFF5F3FF);
+      case 'pribadi':
+        return const Color(0xFFFFFBEB);
+      default:
+        return const Color(0xFFF1F5F9);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final priorityColor = _getPriorityColor(todo.priority);
+    final priorityBg = _getPriorityBg(todo.priority);
     final categoryColor = _getCategoryColor(todo.category);
+    final categoryBg = _getCategoryBg(todo.category);
 
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 6.0),
-      elevation: todo.isCompleted ? 0.5 : 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14.0),
-        side: BorderSide(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+      decoration: BoxDecoration(
+        color: todo.isCompleted ? const Color(0xFFF8FAFC) : Colors.white,
+        borderRadius: BorderRadius.circular(16.0),
+        border: Border.all(
           color: todo.isCompleted
-              ? Colors.grey.shade300
-              : priorityColor.withValues(alpha: 0.35),
-          width: 1.2,
+              ? const Color(0xFFE2E8F0)
+              : const Color(0xFFE2E8F0),
+          width: 1.0,
         ),
-      ),
-      color: todo.isCompleted ? Colors.grey.shade50 : Colors.white,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14.0),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(6.0, 10.0, 12.0, 12.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Checkbox untuk status selesai/belum
-              Transform.scale(
-                scale: 1.15,
-                child: Checkbox(
-                  value: todo.isCompleted,
-                  activeColor: Colors.teal.shade600,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  onChanged: onToggle,
+        boxShadow: todo.isCompleted
+            ? []
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.03),
+                  blurRadius: 10.0,
+                  offset: const Offset(0, 3),
                 ),
-              ),
-              const SizedBox(width: 4.0),
-              // Detail Konten
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Judul Tugas
-                    Text(
-                      todo.title,
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                        decoration: todo.isCompleted
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
+              ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.0),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Animated Circular Checkbox
+                GestureDetector(
+                  onTap: () => onToggle(!todo.isCompleted),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.only(top: 2.0, right: 12.0),
+                    width: 24.0,
+                    height: 24.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: todo.isCompleted
+                          ? const Color(0xFF10B981)
+                          : Colors.white,
+                      border: Border.all(
                         color: todo.isCompleted
-                            ? Colors.grey.shade600
-                            : Colors.black87,
+                            ? const Color(0xFF10B981)
+                            : const Color(0xFFCBD5E1),
+                        width: 2.0,
                       ),
+                      boxShadow: todo.isCompleted
+                          ? [
+                              BoxShadow(
+                                color: const Color(0xFF10B981).withValues(alpha: 0.3),
+                                blurRadius: 6.0,
+                                offset: const Offset(0, 2),
+                              )
+                            ]
+                          : [],
                     ),
-                    if (todo.description.trim().isNotEmpty) ...[
-                      const SizedBox(height: 4.0),
+                    child: todo.isCompleted
+                        ? const Icon(
+                            Icons.check_rounded,
+                            size: 16.0,
+                            color: Colors.white,
+                          )
+                        : null,
+                  ),
+                ),
+
+                // Content
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
                       Text(
-                        todo.description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        todo.title,
                         style: TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w600,
                           color: todo.isCompleted
-                              ? Colors.grey.shade400
-                              : Colors.grey.shade700,
+                              ? const Color(0xFF94A3B8)
+                              : const Color(0xFF0F172A),
                           decoration: todo.isCompleted
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
+                          decorationColor: const Color(0xFF94A3B8),
                         ),
                       ),
-                    ],
-                    const SizedBox(height: 8.0),
-                    // Badges Prioritas, Kategori, dan Due Date
-                    Wrap(
-                      spacing: 6.0,
-                      runSpacing: 4.0,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        // Chip Prioritas
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 2.5),
-                          decoration: BoxDecoration(
-                            color: priorityColor.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(6.0),
-                            border: Border.all(
-                              color: priorityColor.withValues(alpha: 0.4),
-                              width: 0.8,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.flag_rounded,
-                                size: 12.0,
-                                color: priorityColor,
-                              ),
-                              const SizedBox(width: 3.0),
-                              Text(
-                                todo.priority,
-                                style: TextStyle(
-                                  fontSize: 11.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: priorityColor,
-                                ),
-                              ),
-                            ],
+
+                      if (todo.description.trim().isNotEmpty) ...[
+                        const SizedBox(height: 4.0),
+                        Text(
+                          todo.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            color: todo.isCompleted
+                                ? const Color(0xFFCBD5E1)
+                                : const Color(0xFF64748B),
+                            decoration: todo.isCompleted
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
                           ),
                         ),
-                        // Chip Kategori
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 2.5),
-                          decoration: BoxDecoration(
-                            color: categoryColor.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          child: Text(
-                            todo.category,
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              fontWeight: FontWeight.w600,
-                              color: categoryColor,
-                            ),
-                          ),
-                        ),
-                        // Due Date
-                        if (todo.dueDate != null && todo.dueDate!.isNotEmpty)
+                      ],
+
+                      const SizedBox(height: 10.0),
+
+                      // Tags & Metadata
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 4.0,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          // Priority Pill
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 6.0, vertical: 2.5),
+                                horizontal: 8.0, vertical: 3.5),
+                            decoration: BoxDecoration(
+                              color: priorityBg,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
-                                  Icons.calendar_today_rounded,
-                                  size: 11.5,
-                                  color: Colors.grey.shade600,
+                                Container(
+                                  width: 6.0,
+                                  height: 6.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: priorityColor,
+                                  ),
                                 ),
-                                const SizedBox(width: 3.5),
+                                const SizedBox(width: 5.0),
                                 Text(
-                                  todo.dueDate!,
+                                  todo.priority,
                                   style: TextStyle(
-                                    fontSize: 11.0,
-                                    color: Colors.grey.shade700,
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w600,
+                                    color: priorityColor,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                      ],
+
+                          // Category Pill
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 9.0, vertical: 3.5),
+                            decoration: BoxDecoration(
+                              color: categoryBg,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Text(
+                              todo.category,
+                              style: TextStyle(
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w600,
+                                color: categoryColor,
+                              ),
+                            ),
+                          ),
+
+                          // Due Date
+                          if (todo.dueDate != null && todo.dueDate!.isNotEmpty)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6.0, vertical: 3.5),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.schedule_rounded,
+                                    size: 13.0,
+                                    color: Color(0xFF94A3B8),
+                                  ),
+                                  const SizedBox(width: 4.0),
+                                  Text(
+                                    todo.dueDate!,
+                                    style: const TextStyle(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF64748B),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Popup Options Menu
+                PopupMenuButton<String>(
+                  icon: const Icon(
+                    Icons.more_vert_rounded,
+                    size: 18.0,
+                    color: Color(0xFF94A3B8),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  onSelected: (val) {
+                    if (val == 'edit') onEdit();
+                    if (val == 'delete') onDelete();
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          Icon(Icons.edit_outlined, size: 18, color: Color(0xFF4F46E5)),
+                          SizedBox(width: 10),
+                          Text("Edit", style: TextStyle(fontSize: 13.5)),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete_outline, size: 18, color: Color(0xFFEF4444)),
+                          SizedBox(width: 10),
+                          Text("Hapus", style: TextStyle(fontSize: 13.5, color: Color(0xFFEF4444))),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-              // Menu Popup Titik Tiga (Edit, Hapus)
-              PopupMenuButton<String>(
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.more_vert_rounded,
-                  color: Colors.grey.shade600,
-                  size: 20.0,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                onSelected: (value) {
-                  if (value == 'edit') {
-                    onEdit();
-                  } else if (value == 'delete') {
-                    onDelete();
-                  }
-                },
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    value: 'edit',
-                    child: Row(
-                      children: [
-                        Icon(Icons.edit_outlined, size: 18.0, color: Colors.blue),
-                        SizedBox(width: 8.0),
-                        Text("Edit"),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        Icon(Icons.delete_outline, size: 18.0, color: Colors.red),
-                        SizedBox(width: 8.0),
-                        Text("Hapus"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -61,18 +61,18 @@ class DbHelper {
     final now = DateTime.now();
     final sampleItems = [
       {
-        'title': 'Mengerjakan UTS Pemrograman Mobile Lanjut',
-        'description': 'Menyelesaikan aplikasi Quick Notes & To-Do List dengan Flutter dan SQLite lokal.',
-        'category': 'Kuliah',
+        'title': 'Selesaikan Desain UI/UX Mobile App',
+        'description': 'Finalisasi rancangan tampilan antarmuka dan interaksi pengguna di Figma.',
+        'category': 'Pekerjaan',
         'priority': 'Tinggi',
         'due_date': '${now.year}-${now.month.toString().padLeft(2, '0')}-${(now.day + 2).toString().padLeft(2, '0')}',
         'is_completed': 0,
         'created_at': now.toIso8601String(),
       },
       {
-        'title': 'Membaca Modul Pemrograman Mobile Lanjut',
-        'description': 'Mempelajari arsitektur Flutter, Form validation, TextEditingController, dan SQLite.',
-        'category': 'Kuliah',
+        'title': 'Eksplorasi Framework & Fitur Baru',
+        'description': 'Mempelajari best practice arsitektur aplikasi dan animasi interaktif modern.',
+        'category': 'Tugas',
         'priority': 'Sedang',
         'due_date': '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}',
         'is_completed': 1,
@@ -80,7 +80,7 @@ class DbHelper {
       },
       {
         'title': 'Beli Kebutuhan Mingguan',
-        'description': 'Membeli buah, sayuran, dan susu di supermarket.',
+        'description': 'Membeli buah, sayuran segar, dan biji kopi di supermarket.',
         'category': 'Pribadi',
         'priority': 'Rendah',
         'due_date': '${now.year}-${now.month.toString().padLeft(2, '0')}-${(now.day + 4).toString().padLeft(2, '0')}',
@@ -88,9 +88,9 @@ class DbHelper {
         'created_at': now.subtract(const Duration(hours: 4)).toIso8601String(),
       },
       {
-        'title': 'Review Pull Request Tim',
-        'description': 'Periksa kode clean architecture dan struktur widget rekan satu kelompok.',
-        'category': 'Tugas',
+        'title': 'Review Sprint & Roadmap Tim',
+        'description': 'Evaluasi pencapaian target mingguan dan koordinasi backlog bersama tim.',
+        'category': 'Pekerjaan',
         'priority': 'Sedang',
         'due_date': '${now.year}-${now.month.toString().padLeft(2, '0')}-${(now.day + 1).toString().padLeft(2, '0')}',
         'is_completed': 0,

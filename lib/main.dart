@@ -13,42 +13,74 @@ void main() {
     databaseFactory = databaseFactoryFfi;
   }
 
-  runApp(const MyApp());
+  runApp(const FlowDoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FlowDoApp extends StatelessWidget {
+  const FlowDoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const primaryColor = Color(0xFF4F46E5); // Modern Electric Indigo
+    const scaffoldBg = Color(0xFFF8FAFC); // Clean Slate-50
+
     return MaterialApp(
-      title: 'Quick Notes & To-Do List',
+      title: 'FlowDo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        scaffoldBackgroundColor: scaffoldBg,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF283593), // Indigo
+          seedColor: primaryColor,
+          primary: primaryColor,
+          secondary: const Color(0xFF7C3AED),
+          surface: Colors.white,
           brightness: Brightness.light,
         ),
+        fontFamily: Platform.isAndroid ? 'sans-serif' : null,
         appBarTheme: const AppBarTheme(
           centerTitle: false,
           elevation: 0,
-          backgroundColor: Color(0xFF283593),
-          foregroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.white),
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Color(0xFF0F172A),
+          iconTheme: IconThemeData(color: Color(0xFF0F172A)),
         ),
         cardTheme: CardThemeData(
-          elevation: 2,
+          elevation: 0,
+          color: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
+            side: const BorderSide(color: Color(0xFFE2E8F0), width: 1.0),
           ),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: primaryColor, width: 1.8),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Color(0xFFEF4444)),
           ),
         ),
       ),

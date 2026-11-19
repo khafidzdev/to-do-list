@@ -85,11 +85,11 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => ConfirmDialog(
-        title: "Hapus Catatan / Tugas",
+        title: "Hapus Tugas",
         description:
-            "Apakah Anda yakin ingin menghapus '${_currentTodo.title}' dari penyimpanan lokal?",
+            "Apakah Anda yakin ingin menghapus '${_currentTodo.title}'?",
         confirmText: "Hapus",
-        confirmColor: Colors.red,
+        confirmColor: const Color(0xFFEF4444),
       ),
     );
 
